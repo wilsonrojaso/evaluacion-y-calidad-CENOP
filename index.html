@@ -31,6 +31,7 @@
             color: var(--text-primary);
             overflow-x: hidden;
             position: relative;
+            min-height: 100vh;
         }
 
         /* Fondo con cuadrícula */
@@ -74,7 +75,7 @@
             z-index: 2;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 30px 20px;
+            padding: 30px 20px 80px 20px;
         }
 
         /* Header */
@@ -82,7 +83,7 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             border-bottom: 2px solid var(--neon-cyan);
             padding-bottom: 20px;
             position: relative;
@@ -93,14 +94,14 @@
         }
 
         header h1 {
-            font-size: 2.5em;
+            font-size: 2.2em;
             background: linear-gradient(90deg, var(--neon-cyan), var(--neon-blue), var(--neon-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
             animation: glitch 3s infinite;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
 
         @keyframes glitch {
@@ -108,23 +109,10 @@
             50% { text-shadow: 0 0 30px rgba(176, 0, 255, 0.5); }
         }
 
-        header p {
-            color: var(--text-secondary);
-            font-size: 0.9em;
-            letter-spacing: 2px;
-        }
-
-        /* Footer Credits */
         header .creditos {
             text-align: right;
             font-size: 0.85em;
             color: var(--text-secondary);
-            padding-top: 5px;
-        }
-
-        header .creditos p {
-            margin: 3px 0;
-            letter-spacing: 1px;
         }
 
         header .creditos .empresa {
@@ -148,7 +136,7 @@
 
         .btn {
             padding: 12px 25px;
-            font-size: 1em;
+            font-size: 0.95em;
             font-family: 'Courier New', monospace;
             color: var(--neon-cyan);
             background: transparent;
@@ -160,6 +148,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             font-weight: bold;
+            border-radius: 4px;
         }
 
         .btn::before {
@@ -217,10 +206,10 @@
         }
 
         .modal-content {
-            background: linear-gradient(135deg, rgba(10, 14, 39, 0.9) 0%, rgba(26, 42, 74, 0.9) 100%);
+            background: linear-gradient(135deg, rgba(10, 14, 39, 0.95) 0%, rgba(26, 42, 74, 0.95) 100%);
             border: 2px solid var(--neon-cyan);
             border-radius: 10px;
-            padding: 40px;
+            padding: 35px;
             max-width: 500px;
             width: 90%;
             box-shadow: 0 0 40px rgba(0, 255, 136, 0.2);
@@ -229,61 +218,52 @@
         }
 
         @keyframes slideIn {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         .modal-content h2 {
             color: var(--neon-cyan);
-            margin-bottom: 25px;
-            font-size: 1.8em;
+            margin-bottom: 20px;
+            font-size: 1.6em;
             text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: var(--neon-blue);
-            font-size: 0.9em;
+            font-size: 0.85em;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .form-group input,
-        .form-group textarea {
+        .form-group input {
             width: 100%;
-            padding: 12px;
+            padding: 10px 12px;
             background: rgba(0, 255, 136, 0.05);
             border: 1px solid var(--neon-cyan);
             color: var(--text-primary);
             font-family: 'Courier New', monospace;
-            border-radius: 5px;
+            border-radius: 4px;
             transition: all 0.3s ease;
-            font-size: 1em;
+            font-size: 0.95em;
         }
 
-        .form-group input:focus,
-        .form-group textarea:focus {
+        .form-group input:focus {
             outline: none;
             border-color: var(--neon-purple);
             box-shadow: 0 0 15px rgba(176, 0, 255, 0.3);
-            background: rgba(176, 0, 255, 0.05);
         }
 
         .modal-buttons {
             display: flex;
             gap: 15px;
-            margin-top: 30px;
+            margin-top: 25px;
         }
 
         .modal-buttons .btn {
@@ -294,184 +274,158 @@
             position: absolute;
             top: 15px;
             right: 15px;
-            font-size: 2em;
+            font-size: 1.8em;
             cursor: pointer;
             color: var(--neon-pink);
-            transition: all 0.3s ease;
-        }
-
-        .close-modal:hover {
-            text-shadow: 0 0 10px var(--neon-pink);
         }
 
         /* Grid de Cursos */
         .cursos-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
             gap: 25px;
             margin-bottom: 40px;
         }
 
         .curso-card {
-            background: linear-gradient(135deg, rgba(10, 14, 39, 0.7) 0%, rgba(26, 42, 74, 0.7) 100%);
+            background: linear-gradient(135deg, rgba(10, 14, 39, 0.75) 0%, rgba(26, 42, 74, 0.75) 100%);
             border: 2px solid var(--neon-cyan);
-            border-radius: 10px;
-            padding: 25px;
+            border-radius: 8px;
+            padding: 22px;
             position: relative;
-            overflow: hidden;
             transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
-        }
-
-        .curso-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
-            pointer-events: none;
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(20px, 20px); }
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.1);
         }
 
         .curso-card:hover {
-            border-color: var(--neon-purple);
-            box-shadow: 0 0 30px rgba(176, 0, 255, 0.3), inset 0 0 20px rgba(176, 0, 255, 0.05);
-            transform: translateY(-5px);
+            transform: translateY(-4px);
         }
 
+        /* Clases de Alerta */
         .curso-card.warning-yellow {
-            border-color: var(--warning-yellow);
-            box-shadow: 0 0 20px rgba(255, 235, 59, 0.3);
+            border-color: var(--warning-yellow) !important;
+            box-shadow: 0 0 25px rgba(255, 235, 59, 0.35) !important;
         }
 
         .curso-card.warning-orange {
-            border-color: var(--warning-orange);
-            box-shadow: 0 0 20px rgba(255, 152, 0, 0.3);
+            border-color: var(--warning-orange) !important;
+            box-shadow: 0 0 25px rgba(255, 152, 0, 0.35) !important;
         }
 
         .curso-card.warning-red {
-            border-color: var(--warning-red);
-            box-shadow: 0 0 20px rgba(255, 82, 82, 0.3);
+            border-color: var(--warning-red) !important;
+            box-shadow: 0 0 25px rgba(255, 82, 82, 0.45) !important;
         }
 
         .curso-header {
-            position: relative;
-            z-index: 2;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border-bottom: 1px solid var(--neon-cyan);
-            padding-bottom: 15px;
+            padding-bottom: 12px;
         }
 
         .curso-titulo {
-            font-size: 1.5em;
+            font-size: 1.3em;
             color: var(--neon-cyan);
             margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 1px;
+            font-weight: bold;
         }
 
         .curso-status {
             display: inline-block;
-            padding: 5px 12px;
-            background: rgba(0, 255, 136, 0.2);
+            padding: 4px 10px;
+            background: rgba(0, 255, 136, 0.15);
             border: 1px solid var(--neon-cyan);
-            border-radius: 20px;
+            border-radius: 15px;
             font-size: 0.75em;
             color: var(--neon-cyan);
             text-transform: uppercase;
+            font-weight: bold;
         }
 
-        .curso-status.warning {
+        .curso-status.yellow {
             background: rgba(255, 235, 59, 0.2);
             border-color: var(--warning-yellow);
             color: var(--warning-yellow);
         }
 
-        .curso-status.warning.naranja {
+        .curso-status.orange {
             background: rgba(255, 152, 0, 0.2);
             border-color: var(--warning-orange);
             color: var(--warning-orange);
         }
 
-        .curso-status.warning.rojo {
+        .curso-status.red {
             background: rgba(255, 82, 82, 0.2);
             border-color: var(--warning-red);
             color: var(--warning-red);
         }
 
-        .curso-info {
-            position: relative;
-            z-index: 2;
-            margin-bottom: 20px;
+        .curso-status.ended {
+            background: rgba(160, 160, 160, 0.15);
+            border-color: #666;
+            color: #888;
         }
 
         .info-row {
-            margin-bottom: 15px;
+            margin-bottom: 8px;
             display: flex;
-            align-items: flex-start;
-            gap: 10px;
+            align-items: center;
+            font-size: 0.9em;
         }
 
         .info-label {
             color: var(--neon-blue);
             font-size: 0.85em;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            min-width: 100px;
+            width: 100px;
             font-weight: bold;
         }
 
         .info-value {
             color: var(--text-primary);
-            flex: 1;
+            font-weight: bold;
         }
 
         .coordinador-info {
             background: rgba(0, 255, 136, 0.05);
-            border-left: 2px solid var(--neon-cyan);
+            border-left: 3px solid var(--neon-cyan);
             padding: 12px;
-            border-radius: 5px;
-            margin-bottom: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
         }
 
         .coordinador-nombre {
             color: var(--neon-pink);
             font-weight: bold;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
         }
 
         .phone-buttons {
             display: flex;
             gap: 8px;
             margin-top: 10px;
-            flex-wrap: wrap;
         }
 
         .phone-btn {
             flex: 1;
-            min-width: 80px;
-            padding: 8px 12px;
-            font-size: 0.75em;
+            padding: 7px 4px;
+            font-size: 0.72em;
             background: transparent;
             border: 1px solid var(--neon-blue);
             color: var(--neon-blue);
             cursor: pointer;
-            border-radius: 5px;
-            transition: all 0.3s ease;
+            border-radius: 4px;
+            transition: all 0.2s ease;
             text-transform: uppercase;
             font-family: 'Courier New', monospace;
+            text-align: center;
         }
 
         .phone-btn:hover {
             box-shadow: 0 0 10px var(--neon-blue);
-            background: rgba(0, 217, 255, 0.1);
+            background: rgba(0, 217, 255, 0.15);
         }
 
         .phone-btn.whatsapp {
@@ -481,25 +435,24 @@
 
         .phone-btn.whatsapp:hover {
             box-shadow: 0 0 10px #25d366;
-            background: rgba(37, 211, 102, 0.1);
+            background: rgba(37, 211, 102, 0.15);
         }
 
         .curso-acciones {
-            position: relative;
-            z-index: 2;
             display: flex;
             gap: 10px;
+            margin-top: 10px;
         }
 
         .btn-action {
             flex: 1;
-            padding: 10px 15px;
-            font-size: 0.85em;
+            padding: 9px;
+            font-size: 0.8em;
             background: transparent;
             border: 1px solid var(--neon-cyan);
             color: var(--neon-cyan);
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 4px;
             transition: all 0.3s ease;
             text-transform: uppercase;
             font-family: 'Courier New', monospace;
@@ -508,7 +461,7 @@
 
         .btn-action:hover {
             box-shadow: 0 0 15px var(--neon-cyan);
-            background: rgba(0, 255, 136, 0.1);
+            background: rgba(0, 255, 136, 0.15);
         }
 
         .btn-action.danger {
@@ -518,24 +471,23 @@
 
         .btn-action.danger:hover {
             box-shadow: 0 0 15px var(--neon-pink);
-            background: rgba(255, 0, 110, 0.1);
+            background: rgba(255, 0, 110, 0.15);
         }
 
         /* Sección de Exportación */
         .export-section {
             background: linear-gradient(135deg, rgba(10, 14, 39, 0.7) 0%, rgba(26, 42, 74, 0.7) 100%);
             border: 2px solid var(--neon-purple);
-            border-radius: 10px;
-            padding: 25px;
+            border-radius: 8px;
+            padding: 20px;
             text-align: center;
-            box-shadow: 0 0 20px rgba(176, 0, 255, 0.1);
+            margin-top: 30px;
         }
 
         .export-section h3 {
             color: var(--neon-purple);
-            margin-bottom: 20px;
-            font-size: 1.3em;
-            text-shadow: 0 0 10px rgba(176, 0, 255, 0.5);
+            margin-bottom: 15px;
+            font-size: 1.2em;
         }
 
         .export-buttons {
@@ -545,88 +497,56 @@
             flex-wrap: wrap;
         }
 
-        /* Mensaje vacío */
+        /* Footer Abajo a la Derecha */
+        .footer-creditos {
+            text-align: right;
+            padding-top: 35px;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        .footer-creditos span {
+            color: var(--neon-pink);
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
         .empty-state {
             text-align: center;
             padding: 60px 20px;
             color: var(--text-secondary);
+            border: 1px dashed var(--grid-color);
+            border-radius: 8px;
         }
 
-        .empty-state svg {
-            width: 100px;
-            height: 100px;
-            margin-bottom: 20px;
-            opacity: 0.5;
-        }
-
-        .empty-state p {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-        }
-
-        /* Toast Notification */
         .toast {
             position: fixed;
             bottom: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+            left: 20px;
+            background: var(--neon-cyan);
             color: var(--dark-bg);
-            padding: 15px 25px;
-            border-radius: 5px;
+            padding: 12px 25px;
+            border-radius: 4px;
             font-weight: bold;
             z-index: 1000;
-            animation: slideInRight 0.3s ease;
             box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
         }
 
         .toast.error {
-            background: linear-gradient(135deg, var(--neon-pink), var(--warning-red));
+            background: var(--neon-pink);
+            color: #ffffff;
         }
 
-        .toast.warning {
-            background: linear-gradient(135deg, var(--warning-yellow), var(--warning-orange));
-        }
-
-        @keyframes slideInRight {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        /* Responsive */
         @media (max-width: 768px) {
             header {
                 flex-direction: column;
                 gap: 15px;
             }
-
-            header h1 {
-                font-size: 2em;
-            }
-
             header .creditos {
                 text-align: left;
             }
-
             .cursos-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .control-panel {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-            }
-
-            .modal-content {
-                padding: 25px;
             }
         }
     </style>
@@ -639,16 +559,14 @@
             </div>
             <div class="creditos">
                 <p class="empresa">CENOP</p>
-                <p>Elaborado por</p>
-                <p class="autor">IT WILSON ROJAS</p>
-                <p class="empresa">CENOP</p>
+                <p>Elaborado por: <span class="autor">IT WILSON ROJAS</span></p>
             </div>
         </header>
 
         <div class="control-panel">
             <button class="btn" onclick="abrirModal()">+ Nuevo Curso</button>
-            <button class="btn secondary" onclick="exportarJSON()">📥 Exportar Datos</button>
-            <button class="btn secondary" onclick="importarJSON()">📤 Importar Datos</button>
+            <button class="btn secondary" onclick="exportarJSON()">📥 Exportar Reporte JSON</button>
+            <button class="btn secondary" onclick="importarJSON()">📤 Cargar Reporte JSON</button>
         </div>
 
         <div id="cursosContainer" class="cursos-grid"></div>
@@ -660,17 +578,22 @@
                 <button class="btn secondary" onclick="actualizarVista()">🔄 Actualizar</button>
             </div>
         </div>
+
+        <!-- Crédito abajo a la derecha -->
+        <div class="footer-creditos">
+            elaborado por: <span>IT WILSON ROJAS - CENOP</span>
+        </div>
     </div>
 
-    <!-- Modal para agregar/editar curso -->
+    <!-- Modal Formulario -->
     <div id="cursoModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="cerrarModal()">&times;</span>
             <h2 id="modalTitulo">Nuevo Curso</h2>
             <form id="cursoForm" onsubmit="guardarCurso(event)">
                 <div class="form-group">
-                    <label for="nombre">Nombre del Curso</label>
-                    <input type="text" id="nombre" required placeholder="Ej: JavaScript Avanzado">
+                    <label for="nombre">Nombre del Curso / Entrenamiento</label>
+                    <input type="text" id="nombre" required placeholder="Ej: Operaciones Tácticas">
                 </div>
 
                 <div class="form-group">
@@ -685,42 +608,52 @@
 
                 <div class="form-group">
                     <label for="grado">Grado del Coordinador</label>
-                    <input type="text" id="grado" placeholder="Ej: Ingeniero, Maestro, etc.">
+                    <input type="text" id="grado" placeholder="Ej: Mayor, Capitán, Ingeniero">
                 </div>
 
                 <div class="form-group">
                     <label for="apellidos">Apellidos del Coordinador</label>
-                    <input type="text" id="apellidos" placeholder="Ej: García López">
+                    <input type="text" id="apellidos" required placeholder="Ej: García López">
                 </div>
 
                 <div class="form-group">
                     <label for="telefono">Teléfono del Coordinador</label>
-                    <input type="tel" id="telefono" placeholder="Ej: +34 123 456 789">
+                    <input type="tel" id="telefono" required placeholder="Ej: +57 310 1234567">
                 </div>
 
                 <div class="modal-buttons">
-                    <button type="submit" class="btn">Guardar Curso</button>
+                    <button type="submit" class="btn">Guardar</button>
                     <button type="button" class="btn secondary" onclick="cerrarModal()">Cancelar</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Input oculto para importar JSON -->
     <input type="file" id="importFile" accept=".json" style="display: none;" onchange="procesarImportacion(event)">
 
     <script>
-        // Estado de la aplicación
         let cursos = [];
         let cursoEditando = null;
 
-        // Cargar datos al iniciar
         document.addEventListener('DOMContentLoaded', () => {
             cargarDatos();
             actualizarVista();
         });
 
-        // Abrir modal para nuevo curso
+        // Convierte el string YYYY-MM-DD en fecha Local pura a las 00:00:00 (Sin desfases UTC)
+        function parsearFechaLocal(strFecha) {
+            if (!strFecha) return null;
+            const partes = strFecha.split('-');
+            return new Date(parseInt(partes[0]), parseInt(partes[1]) - 1, parseInt(partes[2]), 0, 0, 0);
+        }
+
+        // Formatea directamente el string YYYY-MM-DD a DD/MM/YYYY sin alterar el día
+        function formatearFechaVisual(strFecha) {
+            if (!strFecha) return '';
+            const [year, month, day] = strFecha.split('-');
+            return `${day}/${month}/${year}`;
+        }
+
         function abrirModal(id = null) {
             cursoEditando = id;
             const modal = document.getElementById('cursoModal');
@@ -732,7 +665,7 @@
                 document.getElementById('nombre').value = curso.nombre;
                 document.getElementById('fechaInicio').value = curso.fechaInicio;
                 document.getElementById('fechaFin').value = curso.fechaFin;
-                document.getElementById('grado').value = curso.grado;
+                document.getElementById('grado').value = curso.grado || '';
                 document.getElementById('apellidos').value = curso.apellidos;
                 document.getElementById('telefono').value = curso.telefono;
             } else {
@@ -743,13 +676,11 @@
             modal.classList.add('active');
         }
 
-        // Cerrar modal
         function cerrarModal() {
             document.getElementById('cursoModal').classList.remove('active');
             cursoEditando = null;
         }
 
-        // Guardar curso
         function guardarCurso(e) {
             e.preventDefault();
 
@@ -760,14 +691,15 @@
             const apellidos = document.getElementById('apellidos').value;
             const telefono = document.getElementById('telefono').value;
 
-            // Validar fechas
-            if (new Date(fechaInicio) >= new Date(fechaFin)) {
-                mostrarToast('La fecha de inicio debe ser anterior a la fecha final', 'error');
+            const fInicio = parsearFechaLocal(fechaInicio);
+            const fFin = parsearFechaLocal(fechaFin);
+
+            if (fInicio > fFin) {
+                mostrarToast('La fecha de inicio no puede ser posterior a la final', 'error');
                 return;
             }
 
             if (cursoEditando !== null) {
-                // Editar
                 const curso = cursos.find(c => c.id === cursoEditando);
                 curso.nombre = nombre;
                 curso.fechaInicio = fechaInicio;
@@ -777,18 +709,15 @@
                 curso.telefono = telefono;
                 mostrarToast('Curso actualizado correctamente');
             } else {
-                // Nuevo
-                const nuevoCurso = {
+                cursos.push({
                     id: Date.now(),
                     nombre,
                     fechaInicio,
                     fechaFin,
                     grado,
                     apellidos,
-                    telefono,
-                    fechaCreacion: new Date().toISOString()
-                };
-                cursos.push(nuevoCurso);
+                    telefono
+                });
                 mostrarToast('Curso agregado correctamente');
             }
 
@@ -797,50 +726,55 @@
             actualizarVista();
         }
 
-        // Eliminar curso
         function eliminarCurso(id) {
-            if (confirm('¿Estás seguro de que deseas eliminar este curso?')) {
+            if (confirm('¿Estás seguro de eliminar este entrenamiento?')) {
                 cursos = cursos.filter(c => c.id !== id);
                 guardarDatos();
                 actualizarVista();
-                mostrarToast('Curso eliminado correctamente', 'warning');
+                mostrarToast('Curso eliminado correctamente');
             }
         }
 
-        // Calcular días restantes y nivel de alerta
-        function calcularAlerta(fechaFin) {
+        // Semáforo: 5 días antes (Amarillo), 3 días antes (Naranja), 1 día / hoy (Rojo)
+        function calcularAlerta(fechaFinStr) {
             const hoy = new Date();
-            hoy.setHours(0, 0, 0, 0);
-            
-            const fin = new Date(fechaFin);
-            fin.setHours(0, 0, 0, 0);
+            const hoyCero = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate(), 0, 0, 0);
+            const finCero = parsearFechaLocal(fechaFinStr);
 
-            const diferencia = Math.floor((fin - hoy) / (1000 * 60 * 60 * 24));
+            // Redondeo para evitar decimales por cambios de horario
+            const msPorDia = 1000 * 60 * 60 * 24;
+            const diferencia = Math.round((finCero - hoyCero) / msPorDia);
 
-            if (diferencia < 0) return { nivel: 'terminado', dias: 0, clase: '' };
-            if (diferencia === 0) return { nivel: 'hoy', dias: 0, clase: 'warning-red' };
-            if (diferencia <= 5) {
-                if (diferencia <= 1) return { nivel: 'urgente', dias: diferencia, clase: 'warning-red' };
-                if (diferencia <= 3) return { nivel: 'critico', dias: diferencia, clase: 'warning-orange' };
-                return { nivel: 'advertencia', dias: diferencia, clase: 'warning-yellow' };
+            if (diferencia < 0) {
+                return { nivel: 'terminado', dias: Math.abs(diferencia), clase: '', colorStatus: 'ended' };
             }
-            return { nivel: 'normal', dias: diferencia, clase: '' };
+            if (diferencia === 0) {
+                return { nivel: 'hoy', dias: 0, clase: 'warning-red', colorStatus: 'red' };
+            }
+            if (diferencia === 1) {
+                return { nivel: 'urgente', dias: 1, clase: 'warning-red', colorStatus: 'red' };
+            }
+            if (diferencia <= 3) {
+                return { nivel: 'critico', dias: diferencia, clase: 'warning-orange', colorStatus: 'orange' };
+            }
+            if (diferencia <= 5) {
+                return { nivel: 'advertencia', dias: diferencia, clase: 'warning-yellow', colorStatus: 'yellow' };
+            }
+            return { nivel: 'normal', dias: diferencia, clase: '', colorStatus: '' };
         }
 
-        // Obtener etiqueta de estado
         function obtenerEtiqueta(alerta) {
             switch (alerta.nivel) {
-                case 'terminado': return 'TERMINADO';
-                case 'hoy': return 'HOY VENCE';
-                case 'urgente': return `⚠️ VENCE EN ${alerta.dias} DÍA${alerta.dias !== 1 ? 'S' : ''}`;
+                case 'terminado': return `FINALIZADO HACE ${alerta.dias} DÍA${alerta.dias !== 1 ? 'S' : ''}`;
+                case 'hoy': return '⚠️ FINALIZA HOY';
+                case 'urgente': return '⚠️ VENCE MAÑANA (1 DÍA)';
                 case 'critico': return `⚠️ VENCE EN ${alerta.dias} DÍAS`;
-                case 'advertencia': return `⚠️ VENCE EN ${alerta.dias} DÍAS`;
-                case 'normal': return `EN CURSO - ${alerta.dias} DÍAS`;
-                default: return 'SIN ESTADO';
+                case 'advertencia': return `⚠️ AVISO: VENCE EN ${alerta.dias} DÍAS`;
+                case 'normal': return `EN CURSO (${alerta.dias} DÍAS RESTANTES)`;
+                default: return 'ACTIVO';
             }
         }
 
-        // Actualizar vista
         function actualizarVista() {
             const container = document.getElementById('cursosContainer');
 
@@ -848,10 +782,8 @@
                 container.innerHTML = `
                     <div style="grid-column: 1/-1;">
                         <div class="empty-state">
-                            <p>📡 No hay cursos registrados</p>
-                            <p style="font-size: 0.9em; color: var(--text-secondary);">
-                                Haz clic en "+ Nuevo Curso" para comenzar
-                            </p>
+                            <p>📡 No hay cursos o entrenamientos registrados.</p>
+                            <p style="font-size: 0.85em; margin-top: 5px;">Presiona "+ Nuevo Curso" para agregar uno.</p>
                         </div>
                     </div>
                 `;
@@ -860,34 +792,36 @@
 
             container.innerHTML = cursos.map(curso => {
                 const alerta = calcularAlerta(curso.fechaFin);
-                const inicio = new Date(curso.fechaInicio).toLocaleDateString('es-ES');
-                const fin = new Date(curso.fechaFin).toLocaleDateString('es-ES');
+                const inicioVisual = formatearFechaVisual(curso.fechaInicio);
+                const finVisual = formatearFechaVisual(curso.fechaFin);
 
                 return `
                     <div class="curso-card ${alerta.clase}">
                         <div class="curso-header">
                             <div class="curso-titulo">${curso.nombre}</div>
-                            <span class="curso-status ${alerta.nivel !== 'normal' ? 'warning' : ''} ${alerta.clase.includes('orange') ? 'naranja' : ''} ${alerta.clase.includes('red') ? 'rojo' : ''}">
+                            <span class="curso-status ${alerta.colorStatus}">
                                 ${obtenerEtiqueta(alerta)}
                             </span>
                         </div>
 
                         <div class="curso-info">
                             <div class="info-row">
-                                <span class="info-label">📅 Inicio:</span>
-                                <span class="info-value">${inicio}</span>
+                                <span class="info-label">📅 INICIO:</span>
+                                <span class="info-value">${inicioVisual}</span>
                             </div>
 
                             <div class="info-row">
-                                <span class="info-label">📅 Fin:</span>
-                                <span class="info-value">${fin}</span>
+                                <span class="info-label">📅 FIN:</span>
+                                <span class="info-value">${finVisual}</span>
                             </div>
 
                             <div class="coordinador-info">
                                 <div class="coordinador-nombre">
                                     ${curso.grado ? curso.grado + ' ' : ''}${curso.apellidos}
                                 </div>
-                                <div class="info-value">Coordinador</div>
+                                <div style="font-size: 0.8em; color: var(--text-secondary); margin-bottom: 6px;">
+                                    📞 ${curso.telefono}
+                                </div>
                                 <div class="phone-buttons">
                                     <button class="phone-btn" onclick="llamar('${curso.telefono}')">☎️ Llamar</button>
                                     <button class="phone-btn whatsapp" onclick="whatsapp('${curso.telefono}')">💬 WhatsApp</button>
@@ -905,13 +839,12 @@
             }).join('');
         }
 
-        // Funciones de contacto
         function llamar(telefono) {
             window.location.href = `tel:${telefono}`;
         }
 
         function whatsapp(telefono) {
-            const numero = telefono.replace(/\s+/g, '').replace('+', '');
+            const numero = telefono.replace(/[^0-9]/g, '');
             window.open(`https://wa.me/${numero}`, '_blank');
         }
 
@@ -921,13 +854,12 @@
             });
         }
 
-        // Exportar JSON
         function exportarJSON() {
             const datos = {
-                version: '1.0',
+                empresa: "CENOP",
+                dependencia: "EVALUACION Y CALIDAD",
+                autor: "IT WILSON ROJAS",
                 fechaExportacion: new Date().toISOString(),
-                totalCursos: cursos.length,
-                empresa: 'CENOP',
                 cursos: cursos
             };
 
@@ -936,16 +868,14 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `evaluacion-cenop-${new Date().toISOString().split('T')[0]}.json`;
+            a.download = `REPORTE_CENOP_${new Date().toISOString().split('T')[0]}.json`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-
-            mostrarToast('Datos exportados correctamente');
+            mostrarToast('Reporte JSON generado');
         }
 
-        // Importar JSON
         function importarJSON() {
             document.getElementById('importFile').click();
         }
@@ -958,55 +888,50 @@
             reader.onload = (event) => {
                 try {
                     const datos = JSON.parse(event.target.result);
-                    
-                    if (!datos.cursos || !Array.isArray(datos.cursos)) {
-                        throw new Error('Formato de archivo inválido');
+                    const listado = Array.isArray(datos) ? datos : datos.cursos;
+
+                    if (!Array.isArray(listado)) {
+                        throw new Error('Estructura no válida');
                     }
 
-                    if (confirm(`Se importarán ${datos.cursos.length} cursos. ¿Deseas reemplazar los datos existentes?`)) {
-                        cursos = datos.cursos;
+                    if (confirm(`Se cargarán ${listado.length} registros. ¿Deseas reemplazar los datos actuales?`)) {
+                        cursos = listado;
                         guardarDatos();
                         actualizarVista();
-                        mostrarToast('Datos importados correctamente');
+                        mostrarToast('Reporte cargado con éxito');
                     }
                 } catch (error) {
-                    mostrarToast('Error al importar el archivo: ' + error.message, 'error');
+                    mostrarToast('Error al importar archivo JSON', 'error');
                 }
             };
             reader.readAsText(file);
             e.target.value = '';
         }
 
-        // Limpiar todos los datos
         function limpiarTodos() {
-            if (confirm('⚠️ ADVERTENCIA: Esto eliminará TODOS los cursos. ¿Estás seguro?')) {
-                if (confirm('Esta acción no se puede deshacer. ¿Realmente lo deseas?')) {
-                    cursos = [];
-                    guardarDatos();
-                    actualizarVista();
-                    mostrarToast('Todos los datos han sido eliminados', 'warning');
-                }
+            if (confirm('⚠️ ¿Estás seguro de eliminar TODOS los entrenamientos?')) {
+                cursos = [];
+                guardarDatos();
+                actualizarVista();
+                mostrarToast('Base de datos vaciada');
             }
         }
 
-        // Almacenamiento local
         function guardarDatos() {
-            localStorage.setItem('cursos', JSON.stringify(cursos));
+            localStorage.setItem('cenop_cursos_db', JSON.stringify(cursos));
         }
 
         function cargarDatos() {
-            const datos = localStorage.getItem('cursos');
+            const datos = localStorage.getItem('cenop_cursos_db');
             if (datos) {
                 try {
                     cursos = JSON.parse(datos);
                 } catch (e) {
-                    console.error('Error al cargar datos:', e);
                     cursos = [];
                 }
             }
         }
 
-        // Toast notifications
         function mostrarToast(mensaje, tipo = 'success') {
             const toast = document.createElement('div');
             toast.className = `toast ${tipo}`;
@@ -1014,12 +939,10 @@
             document.body.appendChild(toast);
 
             setTimeout(() => {
-                toast.style.animation = 'slideInRight 0.3s ease reverse';
-                setTimeout(() => toast.remove(), 300);
+                toast.remove();
             }, 3000);
         }
 
-        // Cerrar modal al hacer clic fuera
         window.onclick = (event) => {
             const modal = document.getElementById('cursoModal');
             if (event.target === modal) {
