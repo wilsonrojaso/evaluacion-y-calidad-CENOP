@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVALUACION Y CALIDAD - CENOP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --neon-cyan: #00ff88;
+            --neon-purple: #b000ff;
+            --neon-pink: #ff006e;
+            --neon-blue: #00d9ff;
+            --dark-bg: #0a0e27;
+            --grid-color: #1a2a4a;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --warning-yellow: #ffeb3b;
+            --warning-orange: #ff9800;
+            --warning-red: #ff5252;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Fondo con cuadrícula */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(0deg, transparent 24%, var(--grid-color) 25%, var(--grid-color) 26%, transparent 27%, transparent 74%, var(--grid-color) 75%, var(--grid-color) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, var(--grid-color) 25%, var(--grid-color) 26%, transparent 27%, transparent 74%, var(--grid-color) 75%, var(--grid-color) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.3;
+        }
+
+        /* Olas neon animadas */
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 120px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path d="M0,50 Q300,10 600,50 T1200,50 L1200,120 L0,120 Z" fill="rgba(0,255,136,0.05)"/><path d="M0,60 Q300,20 600,60 T1200,60 L1200,120 L0,120 Z" fill="rgba(0,217,255,0.05)"/></svg>') repeat-x;
+            animation: wave 15s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 50px;
+            border-bottom: 2px solid var(--neon-cyan);
+            padding-bottom: 20px;
+            position: relative;
+        }
+
+        header .titulo-izq {
+            flex: 1;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            animation: glitch 3s infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes glitch {
+            0%, 100% { text-shadow: 0 0 20px rgba(0, 255, 136, 0.5); }
+            50% { text-shadow: 0 0 30px rgba(176, 0, 255, 0.5); }
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            letter-spacing: 2px;
+        }
+
+        /* Footer Credits */
+        header .creditos {
+            text-align: right;
+            font-size: 0.85em;
+            color: var(--text-secondary);
+            padding-top: 5px;
+        }
+
+        header .creditos p {
+            margin: 3px 0;
+            letter-spacing: 1px;
+        }
+
+        header .creditos .empresa {
+            color: var(--neon-cyan);
+            font-weight: bold;
+        }
+
+        header .creditos .autor {
+            color: var(--neon-pink);
+            font-weight: bold;
+        }
+
+        /* Panel de Controles */
+        .control-panel {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            font-size: 1em;
+            font-family: 'Courier New', monospace;
+            color: var(--neon-cyan);
+            background: transparent;
+            border: 2px solid var(--neon-cyan);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--neon-cyan);
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .btn:hover {
+            color: var(--dark-bg);
+            box-shadow: 0 0 20px var(--neon-cyan), inset 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        .btn:hover::before {
+            left: 0;
+        }
+
+        .btn.secondary {
+            border-color: var(--neon-purple);
+            color: var(--neon-purple);
+        }
+
+        .btn.secondary::before {
+            background: var(--neon-purple);
+        }
+
+        .btn.secondary:hover {
+            color: var(--dark-bg);
+            box-shadow: 0 0 20px var(--neon-purple), inset 0 0 10px rgba(176, 0, 255, 0.3);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(5px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(10, 14, 39, 0.9) 0%, rgba(26, 42, 74, 0.9) 100%);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 10px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.2);
+            position: relative;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-content h2 {
+            color: var(--neon-cyan);
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--neon-blue);
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 255, 136, 0.05);
+            border: 1px solid var(--neon-cyan);
+            color: var(--text-primary);
+            font-family: 'Courier New', monospace;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-size: 1em;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 15px rgba(176, 0, 255, 0.3);
+            background: rgba(176, 0, 255, 0.05);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .modal-buttons .btn {
+            flex: 1;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 2em;
+            cursor: pointer;
+            color: var(--neon-pink);
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            text-shadow: 0 0 10px var(--neon-pink);
+        }
+
+        /* Grid de Cursos */
+        .cursos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .curso-card {
+            background: linear-gradient(135deg, rgba(10, 14, 39, 0.7) 0%, rgba(26, 42, 74, 0.7) 100%);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 10px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+        }
+
+        .curso-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(20px, 20px); }
+        }
+
+        .curso-card:hover {
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 30px rgba(176, 0, 255, 0.3), inset 0 0 20px rgba(176, 0, 255, 0.05);
+            transform: translateY(-5px);
+        }
+
+        .curso-card.warning-yellow {
+            border-color: var(--warning-yellow);
+            box-shadow: 0 0 20px rgba(255, 235, 59, 0.3);
+        }
+
+        .curso-card.warning-orange {
+            border-color: var(--warning-orange);
+            box-shadow: 0 0 20px rgba(255, 152, 0, 0.3);
+        }
+
+        .curso-card.warning-red {
+            border-color: var(--warning-red);
+            box-shadow: 0 0 20px rgba(255, 82, 82, 0.3);
+        }
+
+        .curso-header {
+            position: relative;
+            z-index: 2;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--neon-cyan);
+            padding-bottom: 15px;
+        }
+
+        .curso-titulo {
+            font-size: 1.5em;
+            color: var(--neon-cyan);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .curso-status {
+            display: inline-block;
+            padding: 5px 12px;
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid var(--neon-cyan);
+            border-radius: 20px;
+            font-size: 0.75em;
+            color: var(--neon-cyan);
+            text-transform: uppercase;
+        }
+
+        .curso-status.warning {
+            background: rgba(255, 235, 59, 0.2);
+            border-color: var(--warning-yellow);
+            color: var(--warning-yellow);
+        }
+
+        .curso-status.warning.naranja {
+            background: rgba(255, 152, 0, 0.2);
+            border-color: var(--warning-orange);
+            color: var(--warning-orange);
+        }
+
+        .curso-status.warning.rojo {
+            background: rgba(255, 82, 82, 0.2);
+            border-color: var(--warning-red);
+            color: var(--warning-red);
+        }
+
+        .curso-info {
+            position: relative;
+            z-index: 2;
+            margin-bottom: 20px;
+        }
+
+        .info-row {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .info-label {
+            color: var(--neon-blue);
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-width: 100px;
+            font-weight: bold;
+        }
+
+        .info-value {
+            color: var(--text-primary);
+            flex: 1;
+        }
+
+        .coordinador-info {
+            background: rgba(0, 255, 136, 0.05);
+            border-left: 2px solid var(--neon-cyan);
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .coordinador-nombre {
+            color: var(--neon-pink);
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .phone-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .phone-btn {
+            flex: 1;
+            min-width: 80px;
+            padding: 8px 12px;
+            font-size: 0.75em;
+            background: transparent;
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-family: 'Courier New', monospace;
+        }
+
+        .phone-btn:hover {
+            box-shadow: 0 0 10px var(--neon-blue);
+            background: rgba(0, 217, 255, 0.1);
+        }
+
+        .phone-btn.whatsapp {
+            border-color: #25d366;
+            color: #25d366;
+        }
+
+        .phone-btn.whatsapp:hover {
+            box-shadow: 0 0 10px #25d366;
+            background: rgba(37, 211, 102, 0.1);
+        }
+
+        .curso-acciones {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 10px 15px;
+            font-size: 0.85em;
+            background: transparent;
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+
+        .btn-action:hover {
+            box-shadow: 0 0 15px var(--neon-cyan);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .btn-action.danger {
+            border-color: var(--neon-pink);
+            color: var(--neon-pink);
+        }
+
+        .btn-action.danger:hover {
+            box-shadow: 0 0 15px var(--neon-pink);
+            background: rgba(255, 0, 110, 0.1);
+        }
+
+        /* Sección de Exportación */
+        .export-section {
+            background: linear-gradient(135deg, rgba(10, 14, 39, 0.7) 0%, rgba(26, 42, 74, 0.7) 100%);
+            border: 2px solid var(--neon-purple);
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(176, 0, 255, 0.1);
+        }
+
+        .export-section h3 {
+            color: var(--neon-purple);
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            text-shadow: 0 0 10px rgba(176, 0, 255, 0.5);
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Mensaje vacío */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state svg {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+            color: var(--dark-bg);
+            padding: 15px 25px;
+            border-radius: 5px;
+            font-weight: bold;
+            z-index: 1000;
+            animation: slideInRight 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .toast.error {
+            background: linear-gradient(135deg, var(--neon-pink), var(--warning-red));
+        }
+
+        .toast.warning {
+            background: linear-gradient(135deg, var(--warning-yellow), var(--warning-orange));
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+
+            header .creditos {
+                text-align: left;
+            }
+
+            .cursos-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .control-panel {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .modal-content {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="titulo-izq">
+                <h1>EVALUACION Y CALIDAD - CENOP</h1>
+            </div>
+            <div class="creditos">
+                <p class="empresa">CENOP</p>
+                <p>Elaborado por</p>
+                <p class="autor">IT WILSON ROJAS</p>
+                <p class="empresa">CENOP</p>
+            </div>
+        </header>
+
+        <div class="control-panel">
+            <button class="btn" onclick="abrirModal()">+ Nuevo Curso</button>
+            <button class="btn secondary" onclick="exportarJSON()">📥 Exportar Datos</button>
+            <button class="btn secondary" onclick="importarJSON()">📤 Importar Datos</button>
+        </div>
+
+        <div id="cursosContainer" class="cursos-grid"></div>
+
+        <div class="export-section">
+            <h3>⚡ Centro de Control ⚡</h3>
+            <div class="export-buttons">
+                <button class="btn" onclick="limpiarTodos()">🗑️ Limpiar Todo</button>
+                <button class="btn secondary" onclick="actualizarVista()">🔄 Actualizar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para agregar/editar curso -->
+    <div id="cursoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="cerrarModal()">&times;</span>
+            <h2 id="modalTitulo">Nuevo Curso</h2>
+            <form id="cursoForm" onsubmit="guardarCurso(event)">
+                <div class="form-group">
+                    <label for="nombre">Nombre del Curso</label>
+                    <input type="text" id="nombre" required placeholder="Ej: JavaScript Avanzado">
+                </div>
+
+                <div class="form-group">
+                    <label for="fechaInicio">Fecha de Inicio</label>
+                    <input type="date" id="fechaInicio" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="fechaFin">Fecha de Finalización</label>
+                    <input type="date" id="fechaFin" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="grado">Grado del Coordinador</label>
+                    <input type="text" id="grado" placeholder="Ej: Ingeniero, Maestro, etc.">
+                </div>
+
+                <div class="form-group">
+                    <label for="apellidos">Apellidos del Coordinador</label>
+                    <input type="text" id="apellidos" placeholder="Ej: García López">
+                </div>
+
+                <div class="form-group">
+                    <label for="telefono">Teléfono del Coordinador</label>
+                    <input type="tel" id="telefono" placeholder="Ej: +34 123 456 789">
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="submit" class="btn">Guardar Curso</button>
+                    <button type="button" class="btn secondary" onclick="cerrarModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Input oculto para importar JSON -->
+    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="procesarImportacion(event)">
+
+    <script>
+        // Estado de la aplicación
+        let cursos = [];
+        let cursoEditando = null;
+
+        // Cargar datos al iniciar
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarDatos();
+            actualizarVista();
+        });
+
+        // Abrir modal para nuevo curso
+        function abrirModal(id = null) {
+            cursoEditando = id;
+            const modal = document.getElementById('cursoModal');
+            const form = document.getElementById('cursoForm');
+
+            if (id !== null) {
+                const curso = cursos.find(c => c.id === id);
+                document.getElementById('modalTitulo').textContent = 'Editar Curso';
+                document.getElementById('nombre').value = curso.nombre;
+                document.getElementById('fechaInicio').value = curso.fechaInicio;
+                document.getElementById('fechaFin').value = curso.fechaFin;
+                document.getElementById('grado').value = curso.grado;
+                document.getElementById('apellidos').value = curso.apellidos;
+                document.getElementById('telefono').value = curso.telefono;
+            } else {
+                document.getElementById('modalTitulo').textContent = 'Nuevo Curso';
+                form.reset();
+            }
+
+            modal.classList.add('active');
+        }
+
+        // Cerrar modal
+        function cerrarModal() {
+            document.getElementById('cursoModal').classList.remove('active');
+            cursoEditando = null;
+        }
+
+        // Guardar curso
+        function guardarCurso(e) {
+            e.preventDefault();
+
+            const nombre = document.getElementById('nombre').value;
+            const fechaInicio = document.getElementById('fechaInicio').value;
+            const fechaFin = document.getElementById('fechaFin').value;
+            const grado = document.getElementById('grado').value;
+            const apellidos = document.getElementById('apellidos').value;
+            const telefono = document.getElementById('telefono').value;
+
+            // Validar fechas
+            if (new Date(fechaInicio) >= new Date(fechaFin)) {
+                mostrarToast('La fecha de inicio debe ser anterior a la fecha final', 'error');
+                return;
+            }
+
+            if (cursoEditando !== null) {
+                // Editar
+                const curso = cursos.find(c => c.id === cursoEditando);
+                curso.nombre = nombre;
+                curso.fechaInicio = fechaInicio;
+                curso.fechaFin = fechaFin;
+                curso.grado = grado;
+                curso.apellidos = apellidos;
+                curso.telefono = telefono;
+                mostrarToast('Curso actualizado correctamente');
+            } else {
+                // Nuevo
+                const nuevoCurso = {
+                    id: Date.now(),
+                    nombre,
+                    fechaInicio,
+                    fechaFin,
+                    grado,
+                    apellidos,
+                    telefono,
+                    fechaCreacion: new Date().toISOString()
+                };
+                cursos.push(nuevoCurso);
+                mostrarToast('Curso agregado correctamente');
+            }
+
+            guardarDatos();
+            cerrarModal();
+            actualizarVista();
+        }
+
+        // Eliminar curso
+        function eliminarCurso(id) {
+            if (confirm('¿Estás seguro de que deseas eliminar este curso?')) {
+                cursos = cursos.filter(c => c.id !== id);
+                guardarDatos();
+                actualizarVista();
+                mostrarToast('Curso eliminado correctamente', 'warning');
+            }
+        }
+
+        // Calcular días restantes y nivel de alerta
+        function calcularAlerta(fechaFin) {
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
+            
+            const fin = new Date(fechaFin);
+            fin.setHours(0, 0, 0, 0);
+
+            const diferencia = Math.floor((fin - hoy) / (1000 * 60 * 60 * 24));
+
+            if (diferencia < 0) return { nivel: 'terminado', dias: 0, clase: '' };
+            if (diferencia === 0) return { nivel: 'hoy', dias: 0, clase: 'warning-red' };
+            if (diferencia <= 5) {
+                if (diferencia <= 1) return { nivel: 'urgente', dias: diferencia, clase: 'warning-red' };
+                if (diferencia <= 3) return { nivel: 'critico', dias: diferencia, clase: 'warning-orange' };
+                return { nivel: 'advertencia', dias: diferencia, clase: 'warning-yellow' };
+            }
+            return { nivel: 'normal', dias: diferencia, clase: '' };
+        }
+
+        // Obtener etiqueta de estado
+        function obtenerEtiqueta(alerta) {
+            switch (alerta.nivel) {
+                case 'terminado': return 'TERMINADO';
+                case 'hoy': return 'HOY VENCE';
+                case 'urgente': return `⚠️ VENCE EN ${alerta.dias} DÍA${alerta.dias !== 1 ? 'S' : ''}`;
+                case 'critico': return `⚠️ VENCE EN ${alerta.dias} DÍAS`;
+                case 'advertencia': return `⚠️ VENCE EN ${alerta.dias} DÍAS`;
+                case 'normal': return `EN CURSO - ${alerta.dias} DÍAS`;
+                default: return 'SIN ESTADO';
+            }
+        }
+
+        // Actualizar vista
+        function actualizarVista() {
+            const container = document.getElementById('cursosContainer');
+
+            if (cursos.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1/-1;">
+                        <div class="empty-state">
+                            <p>📡 No hay cursos registrados</p>
+                            <p style="font-size: 0.9em; color: var(--text-secondary);">
+                                Haz clic en "+ Nuevo Curso" para comenzar
+                            </p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = cursos.map(curso => {
+                const alerta = calcularAlerta(curso.fechaFin);
+                const inicio = new Date(curso.fechaInicio).toLocaleDateString('es-ES');
+                const fin = new Date(curso.fechaFin).toLocaleDateString('es-ES');
+
+                return `
+                    <div class="curso-card ${alerta.clase}">
+                        <div class="curso-header">
+                            <div class="curso-titulo">${curso.nombre}</div>
+                            <span class="curso-status ${alerta.nivel !== 'normal' ? 'warning' : ''} ${alerta.clase.includes('orange') ? 'naranja' : ''} ${alerta.clase.includes('red') ? 'rojo' : ''}">
+                                ${obtenerEtiqueta(alerta)}
+                            </span>
+                        </div>
+
+                        <div class="curso-info">
+                            <div class="info-row">
+                                <span class="info-label">📅 Inicio:</span>
+                                <span class="info-value">${inicio}</span>
+                            </div>
+
+                            <div class="info-row">
+                                <span class="info-label">📅 Fin:</span>
+                                <span class="info-value">${fin}</span>
+                            </div>
+
+                            <div class="coordinador-info">
+                                <div class="coordinador-nombre">
+                                    ${curso.grado ? curso.grado + ' ' : ''}${curso.apellidos}
+                                </div>
+                                <div class="info-value">Coordinador</div>
+                                <div class="phone-buttons">
+                                    <button class="phone-btn" onclick="llamar('${curso.telefono}')">☎️ Llamar</button>
+                                    <button class="phone-btn whatsapp" onclick="whatsapp('${curso.telefono}')">💬 WhatsApp</button>
+                                    <button class="phone-btn" onclick="copiarNumero('${curso.telefono}')">📋 Copiar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="curso-acciones">
+                            <button class="btn-action" onclick="abrirModal(${curso.id})">✏️ Editar</button>
+                            <button class="btn-action danger" onclick="eliminarCurso(${curso.id})">🗑️ Eliminar</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Funciones de contacto
+        function llamar(telefono) {
+            window.location.href = `tel:${telefono}`;
+        }
+
+        function whatsapp(telefono) {
+            const numero = telefono.replace(/\s+/g, '').replace('+', '');
+            window.open(`https://wa.me/${numero}`, '_blank');
+        }
+
+        function copiarNumero(telefono) {
+            navigator.clipboard.writeText(telefono).then(() => {
+                mostrarToast('Número copiado al portapapeles');
+            });
+        }
+
+        // Exportar JSON
+        function exportarJSON() {
+            const datos = {
+                version: '1.0',
+                fechaExportacion: new Date().toISOString(),
+                totalCursos: cursos.length,
+                empresa: 'CENOP',
+                cursos: cursos
+            };
+
+            const json = JSON.stringify(datos, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `evaluacion-cenop-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            mostrarToast('Datos exportados correctamente');
+        }
+
+        // Importar JSON
+        function importarJSON() {
+            document.getElementById('importFile').click();
+        }
+
+        function procesarImportacion(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const datos = JSON.parse(event.target.result);
+                    
+                    if (!datos.cursos || !Array.isArray(datos.cursos)) {
+                        throw new Error('Formato de archivo inválido');
+                    }
+
+                    if (confirm(`Se importarán ${datos.cursos.length} cursos. ¿Deseas reemplazar los datos existentes?`)) {
+                        cursos = datos.cursos;
+                        guardarDatos();
+                        actualizarVista();
+                        mostrarToast('Datos importados correctamente');
+                    }
+                } catch (error) {
+                    mostrarToast('Error al importar el archivo: ' + error.message, 'error');
+                }
+            };
+            reader.readAsText(file);
+            e.target.value = '';
+        }
+
+        // Limpiar todos los datos
+        function limpiarTodos() {
+            if (confirm('⚠️ ADVERTENCIA: Esto eliminará TODOS los cursos. ¿Estás seguro?')) {
+                if (confirm('Esta acción no se puede deshacer. ¿Realmente lo deseas?')) {
+                    cursos = [];
+                    guardarDatos();
+                    actualizarVista();
+                    mostrarToast('Todos los datos han sido eliminados', 'warning');
+                }
+            }
+        }
+
+        // Almacenamiento local
+        function guardarDatos() {
+            localStorage.setItem('cursos', JSON.stringify(cursos));
+        }
+
+        function cargarDatos() {
+            const datos = localStorage.getItem('cursos');
+            if (datos) {
+                try {
+                    cursos = JSON.parse(datos);
+                } catch (e) {
+                    console.error('Error al cargar datos:', e);
+                    cursos = [];
+                }
+            }
+        }
+
+        // Toast notifications
+        function mostrarToast(mensaje, tipo = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${tipo}`;
+            toast.textContent = mensaje;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideInRight 0.3s ease reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Cerrar modal al hacer clic fuera
+        window.onclick = (event) => {
+            const modal = document.getElementById('cursoModal');
+            if (event.target === modal) {
+                cerrarModal();
+            }
+        };
+    </script>
+</body>
+</html>
