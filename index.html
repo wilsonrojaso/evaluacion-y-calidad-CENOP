@@ -618,7 +618,7 @@
 
                 <div class="form-group">
                     <label for="telefono">Teléfono del Coordinador</label>
-                    <input type="tel" id="telefono" required placeholder="Ej: +57 310 1234567">
+                    <input type="tel" id="telefono" required placeholder="Ej: 3209462721">
                 </div>
 
                 <div class="modal-buttons">
@@ -844,7 +844,22 @@
         }
 
         function whatsapp(telefono) {
-            const numero = telefono.replace(/[^0-9]/g, '');
+            // Elimina espacios, guiones y paréntesis, pero mantiene los números
+            let numero = telefono.replace(/[\s\-()]/g, '').trim();
+            
+            // Si empieza con 0, reemplazar con +57 (código Colombia)
+            if (numero.startsWith('0')) {
+                numero = '57' + numero.substring(1);
+            }
+            // Si tiene +, eliminarlo
+            else if (numero.startsWith('+')) {
+                numero = numero.substring(1);
+            }
+            // Si es un número local colombiano (10 dígitos sin 57)
+            else if (!numero.startsWith('57') && numero.length === 10) {
+                numero = '57' + numero;
+            }
+            
             window.open(`https://wa.me/${numero}`, '_blank');
         }
 
