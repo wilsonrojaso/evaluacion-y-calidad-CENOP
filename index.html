@@ -1,969 +1,399 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EVALUACION Y CALIDAD - CENOP</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --neon-cyan: #00ff88;
-            --neon-purple: #b000ff;
-            --neon-pink: #ff006e;
-            --neon-blue: #00d9ff;
-            --dark-bg: #0a0e27;
-            --grid-color: #1a2a4a;
-            --text-primary: #e0e0e0;
-            --text-secondary: #a0a0a0;
-            --warning-yellow: #ffeb3b;
-            --warning-orange: #ff9800;
-            --warning-red: #ff5252;
-        }
-
-        body {
-            font-family: 'Courier New', monospace;
-            background-color: var(--dark-bg);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            position: relative;
-            min-height: 100vh;
-        }
-
-        /* Fondo con cuadrícula */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(0deg, transparent 24%, var(--grid-color) 25%, var(--grid-color) 26%, transparent 27%, transparent 74%, var(--grid-color) 75%, var(--grid-color) 76%, transparent 77%, transparent),
-                linear-gradient(90deg, transparent 24%, var(--grid-color) 25%, var(--grid-color) 26%, transparent 27%, transparent 74%, var(--grid-color) 75%, var(--grid-color) 76%, transparent 77%, transparent);
-            background-size: 50px 50px;
-            pointer-events: none;
-            z-index: 1;
-            opacity: 0.3;
-        }
-
-        /* Olas neon animadas */
-        body::after {
-            content: '';
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 200%;
-            height: 120px;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path d="M0,50 Q300,10 600,50 T1200,50 L1200,120 L0,120 Z" fill="rgba(0,255,136,0.05)"/><path d="M0,60 Q300,20 600,60 T1200,60 L1200,120 L0,120 Z" fill="rgba(0,217,255,0.05)"/></svg>') repeat-x;
-            animation: wave 15s linear infinite;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        @keyframes wave {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        .container {
-            position: relative;
-            z-index: 2;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 30px 20px 80px 20px;
-        }
-
-        /* Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 40px;
-            border-bottom: 2px solid var(--neon-cyan);
-            padding-bottom: 20px;
-            position: relative;
-        }
-
-        header .titulo-izq {
-            flex: 1;
-        }
-
-        header h1 {
-            font-size: 2.2em;
-            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-blue), var(--neon-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
-            animation: glitch 3s infinite;
-            margin-bottom: 5px;
-        }
-
-        @keyframes glitch {
-            0%, 100% { text-shadow: 0 0 20px rgba(0, 255, 136, 0.5); }
-            50% { text-shadow: 0 0 30px rgba(176, 0, 255, 0.5); }
-        }
-
-        header .creditos {
-            text-align: right;
-            font-size: 0.85em;
-            color: var(--text-secondary);
-        }
-
-        header .creditos .empresa {
-            color: var(--neon-cyan);
-            font-weight: bold;
-        }
-
-        header .creditos .autor {
-            color: var(--neon-pink);
-            font-weight: bold;
-        }
-
-        /* Panel de Controles */
-        .control-panel {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .btn {
-            padding: 12px 25px;
-            font-size: 0.95em;
-            font-family: 'Courier New', monospace;
-            color: var(--neon-cyan);
-            background: transparent;
-            border: 2px solid var(--neon-cyan);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: bold;
-            border-radius: 4px;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--neon-cyan);
-            transition: left 0.4s ease;
-            z-index: -1;
-        }
-
-        .btn:hover {
-            color: var(--dark-bg);
-            box-shadow: 0 0 20px var(--neon-cyan), inset 0 0 10px rgba(0, 255, 136, 0.3);
-        }
-
-        .btn:hover::before {
-            left: 0;
-        }
-
-        .btn.secondary {
-            border-color: var(--neon-purple);
-            color: var(--neon-purple);
-        }
-
-        .btn.secondary::before {
-            background: var(--neon-purple);
-        }
-
-        .btn.secondary:hover {
-            color: var(--dark-bg);
-            box-shadow: 0 0 20px var(--neon-purple), inset 0 0 10px rgba(176, 0, 255, 0.3);
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 14, 39, 0.95);
-            backdrop-filter: blur(5px);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, rgba(10, 14, 39, 0.95) 0%, rgba(26, 42, 74, 0.95) 100%);
-            border: 2px solid var(--neon-cyan);
-            border-radius: 10px;
-            padding: 35px;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 0 40px rgba(0, 255, 136, 0.2);
-            position: relative;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateY(-30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .modal-content h2 {
-            color: var(--neon-cyan);
-            margin-bottom: 20px;
-            font-size: 1.6em;
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 6px;
-            color: var(--neon-blue);
-            font-size: 0.85em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 10px 12px;
-            background: rgba(0, 255, 136, 0.05);
-            border: 1px solid var(--neon-cyan);
-            color: var(--text-primary);
-            font-family: 'Courier New', monospace;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            font-size: 0.95em;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--neon-purple);
-            box-shadow: 0 0 15px rgba(176, 0, 255, 0.3);
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .modal-buttons .btn {
-            flex: 1;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 1.8em;
-            cursor: pointer;
-            color: var(--neon-pink);
-        }
-
-        /* Grid de Cursos */
-        .cursos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-
-        .curso-card {
-            background: linear-gradient(135deg, rgba(10, 14, 39, 0.75) 0%, rgba(26, 42, 74, 0.75) 100%);
-            border: 2px solid var(--neon-cyan);
-            border-radius: 8px;
-            padding: 22px;
-            position: relative;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.1);
-        }
-
-        .curso-card:hover {
-            transform: translateY(-4px);
-        }
-
-        /* Clases de Alerta */
-        .curso-card.warning-yellow {
-            border-color: var(--warning-yellow) !important;
-            box-shadow: 0 0 25px rgba(255, 235, 59, 0.35) !important;
-        }
-
-        .curso-card.warning-orange {
-            border-color: var(--warning-orange) !important;
-            box-shadow: 0 0 25px rgba(255, 152, 0, 0.35) !important;
-        }
-
-        .curso-card.warning-red {
-            border-color: var(--warning-red) !important;
-            box-shadow: 0 0 25px rgba(255, 82, 82, 0.45) !important;
-        }
-
-        .curso-header {
-            margin-bottom: 15px;
-            border-bottom: 1px solid var(--neon-cyan);
-            padding-bottom: 12px;
-        }
-
-        .curso-titulo {
-            font-size: 1.3em;
-            color: var(--neon-cyan);
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: bold;
-        }
-
-        .curso-status {
-            display: inline-block;
-            padding: 4px 10px;
-            background: rgba(0, 255, 136, 0.15);
-            border: 1px solid var(--neon-cyan);
-            border-radius: 15px;
-            font-size: 0.75em;
-            color: var(--neon-cyan);
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-
-        .curso-status.yellow {
-            background: rgba(255, 235, 59, 0.2);
-            border-color: var(--warning-yellow);
-            color: var(--warning-yellow);
-        }
-
-        .curso-status.orange {
-            background: rgba(255, 152, 0, 0.2);
-            border-color: var(--warning-orange);
-            color: var(--warning-orange);
-        }
-
-        .curso-status.red {
-            background: rgba(255, 82, 82, 0.2);
-            border-color: var(--warning-red);
-            color: var(--warning-red);
-        }
-
-        .curso-status.ended {
-            background: rgba(160, 160, 160, 0.15);
-            border-color: #666;
-            color: #888;
-        }
-
-        .info-row {
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            font-size: 0.9em;
-        }
-
-        .info-label {
-            color: var(--neon-blue);
-            font-size: 0.85em;
-            text-transform: uppercase;
-            width: 100px;
-            font-weight: bold;
-        }
-
-        .info-value {
-            color: var(--text-primary);
-            font-weight: bold;
-        }
-
-        .coordinador-info {
-            background: rgba(0, 255, 136, 0.05);
-            border-left: 3px solid var(--neon-cyan);
-            padding: 12px;
-            border-radius: 4px;
-            margin: 15px 0;
-        }
-
-        .coordinador-nombre {
-            color: var(--neon-pink);
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
-
-        .phone-buttons {
-            display: flex;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .phone-btn {
-            flex: 1;
-            padding: 7px 4px;
-            font-size: 0.72em;
-            background: transparent;
-            border: 1px solid var(--neon-blue);
-            color: var(--neon-blue);
-            cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-            text-transform: uppercase;
-            font-family: 'Courier New', monospace;
-            text-align: center;
-        }
-
-        .phone-btn:hover {
-            box-shadow: 0 0 10px var(--neon-blue);
-            background: rgba(0, 217, 255, 0.15);
-        }
-
-        .phone-btn.whatsapp {
-            border-color: #25d366;
-            color: #25d366;
-        }
-
-        .phone-btn.whatsapp:hover {
-            box-shadow: 0 0 10px #25d366;
-            background: rgba(37, 211, 102, 0.15);
-        }
-
-        .curso-acciones {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .btn-action {
-            flex: 1;
-            padding: 9px;
-            font-size: 0.8em;
-            background: transparent;
-            border: 1px solid var(--neon-cyan);
-            color: var(--neon-cyan);
-            cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-        }
-
-        .btn-action:hover {
-            box-shadow: 0 0 15px var(--neon-cyan);
-            background: rgba(0, 255, 136, 0.15);
-        }
-
-        .btn-action.danger {
-            border-color: var(--neon-pink);
-            color: var(--neon-pink);
-        }
-
-        .btn-action.danger:hover {
-            box-shadow: 0 0 15px var(--neon-pink);
-            background: rgba(255, 0, 110, 0.15);
-        }
-
-        /* Sección de Exportación */
-        .export-section {
-            background: linear-gradient(135deg, rgba(10, 14, 39, 0.7) 0%, rgba(26, 42, 74, 0.7) 100%);
-            border: 2px solid var(--neon-purple);
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .export-section h3 {
-            color: var(--neon-purple);
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-
-        .export-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        /* Footer Abajo a la Derecha */
-        .footer-creditos {
-            text-align: right;
-            padding-top: 35px;
-            font-size: 0.9em;
-            color: var(--text-secondary);
-        }
-
-        .footer-creditos span {
-            color: var(--neon-pink);
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-secondary);
-            border: 1px dashed var(--grid-color);
-            border-radius: 8px;
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: var(--neon-cyan);
-            color: var(--dark-bg);
-            padding: 12px 25px;
-            border-radius: 4px;
-            font-weight: bold;
-            z-index: 1000;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
-        }
-
-        .toast.error {
-            background: var(--neon-pink);
-            color: #ffffff;
-        }
-
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                gap: 15px;
-            }
-            header .creditos {
-                text-align: left;
-            }
-            .cursos-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EVALUACION Y CALIDAD - CENOP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#07060f; --panel:#0d0b1c; --line:#2a2250;
+  --cyan:#05d9e8; --magenta:#ff2a6d; --yellow:#f9f002; --violet:#8a3ffc; --orange:#ff8a1f;
+  --text:#d9e6ff; --dim:#7d78a8;
+  --display:'Orbitron','Arial Black',sans-serif;
+  --body:'Rajdhani','Segoe UI',sans-serif;
+  --mono:'Share Tech Mono','Courier New',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);font-size:1.1rem;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* Fondo: horizonte con rejilla en perspectiva + resplandor */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  background:
+   radial-gradient(ellipse 60% 40% at 80% 0%,rgba(255,42,109,.22),transparent 70%),
+   radial-gradient(ellipse 60% 45% at 10% 10%,rgba(138,63,252,.25),transparent 70%),
+   linear-gradient(#07060f,#0c0824 60%,#150a33)}
+.bg .floor{position:absolute;left:-50%;bottom:-10%;width:200%;height:55%;
+  background-image:
+   linear-gradient(rgba(5,217,232,.5) 1px,transparent 1px),
+   linear-gradient(90deg,rgba(5,217,232,.5) 1px,transparent 1px);
+  background-size:60px 60px;transform:perspective(420px) rotateX(62deg);transform-origin:center top;
+  animation:floor 3s linear infinite;
+  -webkit-mask-image:linear-gradient(transparent 0%,#000 60%);mask-image:linear-gradient(transparent 0%,#000 60%);opacity:.55}
+@keyframes floor{to{background-position:0 60px}}
+.scan{position:fixed;inset:0;z-index:50;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0,rgba(0,0,0,.18) 1px,transparent 1px,transparent 3px);mix-blend-mode:multiply}
+
+.wrap{position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:28px 22px 60px}
+
+/* Cabecera */
+header{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;padding-bottom:22px;margin-bottom:28px;position:relative}
+header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;
+  background:linear-gradient(90deg,var(--magenta),var(--violet),var(--cyan));box-shadow:0 0 18px var(--magenta)}
+h1{font-family:var(--display);font-weight:900;font-size:clamp(1.7rem,4.6vw,3.3rem);line-height:1.05;letter-spacing:.04em;
+  color:#fff;position:relative;display:inline-block;text-shadow:0 0 22px rgba(5,217,232,.55)}
+h1::before,h1::after{content:attr(data-text);position:absolute;inset:0;overflow:hidden}
+h1::before{color:var(--magenta);transform:translate(3px,0);clip-path:inset(0 0 60% 0);animation:glitchA 4.5s infinite steps(1)}
+h1::after{color:var(--cyan);transform:translate(-3px,0);clip-path:inset(55% 0 0 0);animation:glitchB 4.5s infinite steps(1)}
+@keyframes glitchA{0%,92%,100%{opacity:0}93%{opacity:.9;transform:translate(5px,-1px)}95%{opacity:.9;transform:translate(-4px,1px)}97%{opacity:0}}
+@keyframes glitchB{0%,92%,100%{opacity:0}94%{opacity:.9;transform:translate(-5px,1px)}96%{opacity:.9;transform:translate(4px,-1px)}98%{opacity:0}}
+.sub{font-family:var(--mono);color:var(--cyan);font-size:.95rem;margin-top:10px}
+.sub .cur{display:inline-block;width:.6em;height:1em;background:var(--cyan);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.hud{text-align:right;font-family:var(--mono);font-size:.9rem;color:var(--dim);line-height:1.6}
+.hud b{color:var(--magenta);font-family:var(--display);font-weight:700;letter-spacing:.08em}
+.hud .reloj{color:var(--yellow);font-size:1.5rem;letter-spacing:.1em;text-shadow:0 0 10px rgba(249,240,2,.6)}
+
+/* Estadísticas */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px}
+.stat{--c:var(--cyan);background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--c);padding:14px 16px;
+  clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%)}
+.stat strong{display:block;font-family:var(--display);font-size:2rem;color:var(--c);text-shadow:0 0 14px var(--c);line-height:1.1}
+.stat span{font-family:var(--mono);font-size:.82rem;color:var(--dim)}
+.stat.m{--c:var(--magenta)}.stat.y{--c:var(--yellow)}.stat.v{--c:var(--violet)}
+
+/* Barra de control */
+.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:28px}
+.search{flex:1;min-width:200px;position:relative}
+.search input{width:100%;padding:12px 14px 12px 40px;background:rgba(5,217,232,.05);border:1px solid var(--line);color:var(--text);
+  font-family:var(--mono);font-size:1rem;clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%)}
+.search::before{content:'>_';position:absolute;left:12px;top:50%;transform:translateY(-50%);font-family:var(--mono);color:var(--cyan)}
+.btn{--c:var(--cyan);font-family:var(--display);font-weight:700;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;
+  padding:13px 22px;color:var(--c);background:transparent;border:0;cursor:pointer;position:relative;
+  background:linear-gradient(var(--c),var(--c)) bottom/100% 2px no-repeat,rgba(255,255,255,.02);
+  clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);
+  transition:background-color .2s,color .2s,filter .2s}
+.btn:hover{color:var(--bg);background:var(--c);filter:drop-shadow(0 0 8px var(--c))}
+.btn.m{--c:var(--magenta)}.btn.v{--c:var(--violet)}.btn.y{--c:var(--yellow)}
+.btn.primary{color:var(--bg);background:var(--c)}
+.btn.primary:hover{filter:brightness(1.15) drop-shadow(0 0 10px var(--c))}
+:focus-visible{outline:2px dashed var(--yellow);outline-offset:3px}
+
+/* Tarjetas */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:24px}
+.card{--c:var(--cyan);position:relative;padding:2px;background:linear-gradient(135deg,var(--c),transparent 55%,var(--c));
+  clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,26px 100%,0 calc(100% - 26px));
+  filter:drop-shadow(0 0 10px color-mix(in srgb,var(--c) 45%,transparent));transition:transform .2s}
+.card:hover{transform:translateY(-4px)}
+.card[data-n="advertencia"]{--c:var(--yellow)}
+.card[data-n="critico"]{--c:var(--orange)}
+.card[data-n="urgente"],.card[data-n="hoy"]{--c:var(--magenta)}
+.card[data-n="terminado"]{--c:#5a5680;filter:none}
+.card[data-n="urgente"],.card[data-n="hoy"]{animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{50%{filter:drop-shadow(0 0 22px var(--magenta))}}
+.inner{background:linear-gradient(160deg,#120e2b,#0a0818);padding:22px 22px 20px;height:100%;
+  clip-path:polygon(0 0,calc(100% - 25px) 0,100% 25px,100% 100%,25px 100%,0 calc(100% - 25px))}
+.top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:14px}
+.titulo{font-family:var(--display);font-weight:700;font-size:1.05rem;letter-spacing:.05em;text-transform:uppercase;color:#fff;word-break:break-word;padding-right:20px}
+.tag{display:inline-block;font-family:var(--mono);font-size:.78rem;padding:4px 10px;color:var(--c);border:1px solid var(--c);
+  background:color-mix(in srgb,var(--c) 14%,transparent);margin-bottom:14px}
+.fechas{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-family:var(--mono);font-size:.88rem;margin-bottom:12px}
+.fechas small{display:block;color:var(--dim);font-size:.72rem}
+.fechas span{color:var(--text)}
+.prog{height:8px;background:#1a1536;position:relative;margin-bottom:6px;
+  clip-path:polygon(0 0,100% 0,calc(100% - 5px) 100%,0 100%)}
+.prog i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--violet),var(--c));box-shadow:0 0 10px var(--c)}
+.pct{font-family:var(--mono);font-size:.75rem;color:var(--dim);text-align:right;margin-bottom:14px}
+.coord{border-left:3px solid var(--violet);background:rgba(138,63,252,.08);padding:10px 12px;margin-bottom:14px}
+.coord small{font-family:var(--mono);color:var(--dim);font-size:.75rem}
+.coord p{font-weight:700;font-size:1.2rem;color:var(--c)}
+.tel{font-family:var(--mono);font-size:.85rem;color:var(--text)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.mini{flex:1;min-width:76px;font-family:var(--mono);font-size:.78rem;padding:7px 8px;cursor:pointer;color:var(--cyan);
+  background:transparent;border:1px solid var(--cyan);transition:.2s}
+.mini:hover{background:rgba(5,217,232,.15);box-shadow:0 0 10px var(--cyan)}
+.mini.wa{color:#3dff8b;border-color:#3dff8b}.mini.wa:hover{background:rgba(61,255,139,.15);box-shadow:0 0 10px #3dff8b}
+.mini.ed{color:var(--yellow);border-color:var(--yellow)}.mini.ed:hover{background:rgba(249,240,2,.12);box-shadow:0 0 10px var(--yellow)}
+.mini.del{color:var(--magenta);border-color:var(--magenta)}.mini.del:hover{background:rgba(255,42,109,.15);box-shadow:0 0 10px var(--magenta)}
+.acciones{border-top:1px dashed var(--line);margin-top:14px;padding-top:2px}
+
+.empty{grid-column:1/-1;text-align:center;padding:60px 20px;border:1px dashed var(--line);font-family:var(--mono);color:var(--dim)}
+.empty h2{font-family:var(--display);color:var(--magenta);font-size:1.2rem;margin-bottom:8px;text-shadow:0 0 12px var(--magenta)}
+
+.control{margin-top:40px;border:1px solid var(--violet);padding:20px;text-align:center;background:rgba(138,63,252,.06)}
+.control h3{font-family:var(--display);color:var(--violet);margin-bottom:14px;letter-spacing:.15em;font-size:1rem;text-shadow:0 0 12px var(--violet)}
+.control .row{justify-content:center}.control .btn{flex:0}
+
+/* Modal */
+.modal{display:none;position:fixed;inset:0;z-index:100;background:rgba(5,4,14,.88);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px;overflow:auto}
+.modal.on{display:flex}
+.mbox{width:100%;max-width:520px;padding:2px;background:linear-gradient(135deg,var(--cyan),var(--violet),var(--magenta));
+  clip-path:polygon(0 0,calc(100% - 28px) 0,100% 28px,100% 100%,28px 100%,0 calc(100% - 28px));animation:open .25s ease}
+@keyframes open{from{transform:scale(.94);opacity:0}}
+.mbody{background:#0b0919;padding:30px 28px;clip-path:polygon(0 0,calc(100% - 27px) 0,100% 27px,100% 100%,27px 100%,0 calc(100% - 27px))}
+.mbody h2{font-family:var(--display);color:var(--cyan);margin-bottom:20px;font-size:1.3rem;text-shadow:0 0 12px var(--cyan)}
+.f{margin-bottom:14px}
+.f label{display:block;font-family:var(--mono);font-size:.8rem;color:var(--magenta);margin-bottom:5px}
+.f input{width:100%;padding:11px 12px;background:rgba(5,217,232,.05);border:1px solid var(--line);color:var(--text);font:1rem var(--mono);color-scheme:dark}
+.f input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 14px rgba(5,217,232,.35)}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.macts{display:flex;gap:12px;margin-top:22px}.macts .btn{flex:1}
+
+/* Toast */
+.toast{position:fixed;right:18px;bottom:18px;z-index:200;font-family:var(--mono);padding:14px 20px;color:var(--bg);background:var(--cyan);
+  clip-path:polygon(10px 0,100% 0,100% 100%,0 100%,0 10px);box-shadow:0 0 20px var(--cyan);animation:in .3s ease;font-weight:700}
+.toast.error{background:var(--magenta)}.toast.warning{background:var(--yellow)}
+@keyframes in{from{transform:translateX(120%)}}
+
+@media(max-width:820px){.stats{grid-template-columns:repeat(2,1fr)}header{grid-template-columns:1fr}.hud{text-align:left}}
+@media(max-width:480px){.grid{grid-template-columns:1fr}.f2{grid-template-columns:1fr}.btn{flex:1}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="titulo-izq">
-                <h1>EVALUACION Y CALIDAD - CENOP</h1>
-            </div>
-            <div class="creditos">
-                <p class="empresa">CENOP</p>
-                <p>Elaborado por: <span class="autor">IT WILSON ROJAS</span></p>
-            </div>
-        </header>
+<div class="bg"><div class="floor"></div></div>
+<div class="scan"></div>
 
-        <div class="control-panel">
-            <button class="btn" onclick="abrirModal()">+ Nuevo Curso</button>
-            <button class="btn secondary" onclick="exportarJSON()">📥 Exportar Reporte JSON</button>
-            <button class="btn secondary" onclick="importarJSON()">📤 Cargar Reporte JSON</button>
-        </div>
-
-        <div id="cursosContainer" class="cursos-grid"></div>
-
-        <div class="export-section">
-            <h3>⚡ Centro de Control ⚡</h3>
-            <div class="export-buttons">
-                <button class="btn" onclick="limpiarTodos()">🗑️ Limpiar Todo</button>
-                <button class="btn secondary" onclick="actualizarVista()">🔄 Actualizar</button>
-            </div>
-        </div>
-
-        <!-- Crédito abajo a la derecha -->
-        <div class="footer-creditos">
-            elaborado por: <span>IT WILSON ROJAS - CENOP</span>
-        </div>
+<div class="wrap">
+  <header>
+    <div>
+      <h1 data-text="EVALUACION Y CALIDAD">EVALUACION Y CALIDAD</h1>
+      <p class="sub">// CENOP · control de cursos<span class="cur"></span></p>
     </div>
-
-    <!-- Modal Formulario -->
-    <div id="cursoModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="cerrarModal()">&times;</span>
-            <h2 id="modalTitulo">Nuevo Curso</h2>
-            <form id="cursoForm" onsubmit="guardarCurso(event)">
-                <div class="form-group">
-                    <label for="nombre">Nombre del Curso / Entrenamiento</label>
-                    <input type="text" id="nombre" required placeholder="Ej: Operaciones Tácticas">
-                </div>
-
-                <div class="form-group">
-                    <label for="fechaInicio">Fecha de Inicio</label>
-                    <input type="date" id="fechaInicio" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="fechaFin">Fecha de Finalización</label>
-                    <input type="date" id="fechaFin" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="grado">Grado del Coordinador</label>
-                    <input type="text" id="grado" placeholder="Ej: Mayor, Capitán, Ingeniero">
-                </div>
-
-                <div class="form-group">
-                    <label for="apellidos">Apellidos del Coordinador</label>
-                    <input type="text" id="apellidos" required placeholder="Ej: García López">
-                </div>
-
-                <div class="form-group">
-                    <label for="telefono">Teléfono del Coordinador</label>
-                    <input type="tel" id="telefono" required placeholder="Ej: 3209462721">
-                </div>
-
-                <div class="modal-buttons">
-                    <button type="submit" class="btn">Guardar</button>
-                    <button type="button" class="btn secondary" onclick="cerrarModal()">Cancelar</button>
-                </div>
-            </form>
-        </div>
+    <div class="hud">
+      <div class="reloj" id="reloj">--:--:--</div>
+      <div id="fechaHoy"></div>
+      <div>Elaborado por <b>IT WILSON ROJAS</b></div>
     </div>
+  </header>
 
-    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="procesarImportacion(event)">
+  <section class="stats" aria-label="Resumen">
+    <div class="stat"><strong id="sTotal">0</strong><span>Cursos registrados</span></div>
+    <div class="stat v"><strong id="sCurso">0</strong><span>En curso</span></div>
+    <div class="stat m"><strong id="sRiesgo">0</strong><span>Vencen en 5 días o menos</span></div>
+    <div class="stat y"><strong id="sFin">0</strong><span>Terminados</span></div>
+  </section>
 
-    <script>
-        let cursos = [];
-        let cursoEditando = null;
+  <div class="bar">
+    <div class="search"><input id="buscar" type="search" placeholder="Buscar curso o coordinador" aria-label="Buscar"></div>
+    <button class="btn primary" data-act="nuevo">+ Nuevo curso</button>
+    <button class="btn v" data-act="exportar">Exportar</button>
+    <button class="btn v" data-act="importar">Importar</button>
+  </div>
 
-        document.addEventListener('DOMContentLoaded', () => {
-            cargarDatos();
-            actualizarVista();
-        });
+  <div id="cursos" class="grid"></div>
 
-        // Convierte el string YYYY-MM-DD en fecha Local pura a las 00:00:00 (Sin desfases UTC)
-        function parsearFechaLocal(strFecha) {
-            if (!strFecha) return null;
-            const partes = strFecha.split('-');
-            return new Date(parseInt(partes[0]), parseInt(partes[1]) - 1, parseInt(partes[2]), 0, 0, 0);
-        }
+  <div class="control">
+    <h3>CENTRO DE CONTROL</h3>
+    <div class="row">
+      <button class="btn m" data-act="limpiar">Borrar todo</button>
+      <button class="btn" data-act="refrescar">Actualizar</button>
+    </div>
+  </div>
+</div>
 
-        // Formatea directamente el string YYYY-MM-DD a DD/MM/YYYY sin alterar el día
-        function formatearFechaVisual(strFecha) {
-            if (!strFecha) return '';
-            const [year, month, day] = strFecha.split('-');
-            return `${day}/${month}/${year}`;
-        }
+<div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitulo">
+  <div class="mbox"><div class="mbody">
+    <h2 id="mTitulo">Nuevo curso</h2>
+    <form id="form">
+      <div class="f"><label for="nombre">Nombre del curso</label><input id="nombre" required placeholder="Ej: JavaScript Avanzado"></div>
+      <div class="f2">
+        <div class="f"><label for="fechaInicio">Fecha de inicio</label><input type="date" id="fechaInicio" required></div>
+        <div class="f"><label for="fechaFin">Fecha de finalización</label><input type="date" id="fechaFin" required></div>
+      </div>
+      <div class="f2">
+        <div class="f"><label for="grado">Grado del coordinador</label><input id="grado" placeholder="Ej: Ingeniero"></div>
+        <div class="f"><label for="apellidos">Apellidos</label><input id="apellidos" placeholder="Ej: García López"></div>
+      </div>
+      <div class="f"><label for="telefono">Teléfono del coordinador</label><input type="tel" id="telefono" placeholder="Ej: +57 300 123 4567"></div>
+      <div class="macts">
+        <button type="submit" class="btn primary">Guardar curso</button>
+        <button type="button" class="btn m" data-act="cerrar">Cancelar</button>
+      </div>
+    </form>
+  </div></div>
+</div>
 
-        function abrirModal(id = null) {
-            cursoEditando = id;
-            const modal = document.getElementById('cursoModal');
-            const form = document.getElementById('cursoForm');
+<input type="file" id="importFile" accept=".json" hidden>
 
-            if (id !== null) {
-                const curso = cursos.find(c => c.id === id);
-                document.getElementById('modalTitulo').textContent = 'Editar Curso';
-                document.getElementById('nombre').value = curso.nombre;
-                document.getElementById('fechaInicio').value = curso.fechaInicio;
-                document.getElementById('fechaFin').value = curso.fechaFin;
-                document.getElementById('grado').value = curso.grado || '';
-                document.getElementById('apellidos').value = curso.apellidos;
-                document.getElementById('telefono').value = curso.telefono;
-            } else {
-                document.getElementById('modalTitulo').textContent = 'Nuevo Curso';
-                form.reset();
-            }
+<script>
+let cursos = [];
+let editando = null;
+const $ = id => document.getElementById(id);
+const DIA = 86400000;
 
-            modal.classList.add('active');
-        }
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+// Evita el desfase de un día que produce new Date('YYYY-MM-DD') (UTC)
+const parseF = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); };
+const hoy0 = () => { const h = new Date(); h.setHours(0,0,0,0); return h; };
 
-        function cerrarModal() {
-            document.getElementById('cursoModal').classList.remove('active');
-            cursoEditando = null;
-        }
+function alerta(fechaFin){
+  const dias = Math.round((parseF(fechaFin) - hoy0()) / DIA);
+  if (dias < 0)  return {n:'terminado', dias:0, txt:'TERMINADO'};
+  if (dias === 0) return {n:'hoy', dias:0, txt:'⚠ VENCE HOY'};
+  if (dias <= 1) return {n:'urgente', dias, txt:'⚠ VENCE EN 1 DÍA'};
+  if (dias <= 3) return {n:'critico', dias, txt:`⚠ VENCE EN ${dias} DÍAS`};
+  if (dias <= 5) return {n:'advertencia', dias, txt:`⚠ VENCE EN ${dias} DÍAS`};
+  return {n:'normal', dias, txt:`EN CURSO · ${dias} DÍAS`};
+}
+function progreso(c){
+  const a = parseF(c.fechaInicio), b = parseF(c.fechaFin);
+  return Math.max(0, Math.min(100, Math.round((hoy0() - a) / (b - a) * 100)));
+}
+const fmt = s => parseF(s).toLocaleDateString('es-CO', {day:'2-digit', month:'short', year:'numeric'});
 
-        function guardarCurso(e) {
-            e.preventDefault();
+function render(){
+  const q = $('buscar').value.trim().toLowerCase();
+  const lista = cursos
+    .filter(c => !q || `${c.nombre} ${c.grado} ${c.apellidos}`.toLowerCase().includes(q))
+    .sort((a,b) => parseF(a.fechaFin) - parseF(b.fechaFin));
 
-            const nombre = document.getElementById('nombre').value;
-            const fechaInicio = document.getElementById('fechaInicio').value;
-            const fechaFin = document.getElementById('fechaFin').value;
-            const grado = document.getElementById('grado').value;
-            const apellidos = document.getElementById('apellidos').value;
-            const telefono = document.getElementById('telefono').value;
+  let curso = 0, riesgo = 0, fin = 0;
+  cursos.forEach(c => {
+    const n = alerta(c.fechaFin).n;
+    if (n === 'terminado') fin++; else { curso++; if (n !== 'normal') riesgo++; }
+  });
+  $('sTotal').textContent = cursos.length; $('sCurso').textContent = curso;
+  $('sRiesgo').textContent = riesgo; $('sFin').textContent = fin;
 
-            const fInicio = parsearFechaLocal(fechaInicio);
-            const fFin = parsearFechaLocal(fechaFin);
+  if (!lista.length){
+    $('cursos').innerHTML = `<div class="empty"><h2>${cursos.length ? 'SIN COINCIDENCIAS' : 'SISTEMA SIN DATOS'}</h2>
+      <p>${cursos.length ? 'Ningún curso coincide con la búsqueda.' : 'Pulsa «+ Nuevo curso» para registrar el primero.'}</p></div>`;
+    return;
+  }
+  $('cursos').innerHTML = lista.map(c => {
+    const a = alerta(c.fechaFin), p = progreso(c), t = esc(c.telefono);
+    return `<article class="card" data-n="${a.n}"><div class="inner">
+      <div class="top"><div class="titulo">${esc(c.nombre)}</div></div>
+      <span class="tag">${a.txt}</span>
+      <div class="fechas">
+        <div><small>INICIO</small><span>${fmt(c.fechaInicio)}</span></div>
+        <div><small>FIN</small><span>${fmt(c.fechaFin)}</span></div>
+      </div>
+      <div class="prog"><i style="width:${p}%"></i></div>
+      <div class="pct">${p}% completado</div>
+      <div class="coord">
+        <small>COORDINADOR</small>
+        <p>${esc(((c.grado ? c.grado + ' ' : '') + (c.apellidos || '')).trim()) || 'Sin asignar'}</p>
+        <div class="tel">${t || 'Sin teléfono'}</div>
+        ${t ? `<div class="row">
+          <button class="mini" data-act="llamar" data-tel="${t}">Llamar</button>
+          <button class="mini wa" data-act="wa" data-tel="${t}">WhatsApp</button>
+          <button class="mini" data-act="copiar" data-tel="${t}">Copiar</button></div>` : ''}
+      </div>
+      <div class="row acciones">
+        <button class="mini ed" data-act="editar" data-id="${c.id}">Editar</button>
+        <button class="mini del" data-act="eliminar" data-id="${c.id}">Eliminar</button>
+      </div>
+    </div></article>`;
+  }).join('');
+}
 
-            if (fInicio > fFin) {
-                mostrarToast('La fecha de inicio no puede ser posterior a la final', 'error');
-                return;
-            }
+/* Modal */
+function abrir(id = null){
+  editando = id;
+  const f = $('form');
+  if (id !== null){
+    const c = cursos.find(x => x.id === id);
+    $('mTitulo').textContent = 'Editar curso';
+    ['nombre','fechaInicio','fechaFin','grado','apellidos','telefono'].forEach(k => $(k).value = c[k] ?? '');
+  } else { $('mTitulo').textContent = 'Nuevo curso'; f.reset(); }
+  $('modal').classList.add('on');
+  $('nombre').focus();
+}
+function cerrar(){ $('modal').classList.remove('on'); editando = null; }
 
-            if (cursoEditando !== null) {
-                const curso = cursos.find(c => c.id === cursoEditando);
-                curso.nombre = nombre;
-                curso.fechaInicio = fechaInicio;
-                curso.fechaFin = fechaFin;
-                curso.grado = grado;
-                curso.apellidos = apellidos;
-                curso.telefono = telefono;
-                mostrarToast('Curso actualizado correctamente');
-            } else {
-                cursos.push({
-                    id: Date.now(),
-                    nombre,
-                    fechaInicio,
-                    fechaFin,
-                    grado,
-                    apellidos,
-                    telefono
-                });
-                mostrarToast('Curso agregado correctamente');
-            }
+$('form').addEventListener('submit', e => {
+  e.preventDefault();
+  const d = {};
+  ['nombre','fechaInicio','fechaFin','grado','apellidos','telefono'].forEach(k => d[k] = $(k).value.trim());
+  if (parseF(d.fechaInicio) >= parseF(d.fechaFin)) return toast('La fecha de inicio debe ser anterior a la fecha final', 'error');
+  if (editando !== null){
+    Object.assign(cursos.find(c => c.id === editando), d);
+    toast('Curso actualizado');
+  } else {
+    cursos.push({id: Date.now(), ...d, fechaCreacion: new Date().toISOString()});
+    toast('Curso agregado');
+  }
+  guardar(); cerrar(); render();
+});
 
-            guardarDatos();
-            cerrarModal();
-            actualizarVista();
-        }
+/* Acciones por delegación (evita inyectar datos en atributos onclick) */
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-act]');
+  if (b){
+    const {act, id, tel} = b.dataset;
+    if (act === 'nuevo') abrir();
+    else if (act === 'cerrar') cerrar();
+    else if (act === 'editar') abrir(Number(id));
+    else if (act === 'eliminar'){
+      if (confirm('¿Eliminar este curso?')){ cursos = cursos.filter(c => c.id !== Number(id)); guardar(); render(); toast('Curso eliminado', 'warning'); }
+    }
+    else if (act === 'llamar') location.href = `tel:${tel}`;
+    else if (act === 'wa') window.open(`https://wa.me/${tel.replace(/\D/g, '')}`, '_blank', 'noopener');
+    else if (act === 'copiar') navigator.clipboard.writeText(tel).then(() => toast('Número copiado'));
+    else if (act === 'exportar') exportar();
+    else if (act === 'importar') $('importFile').click();
+    else if (act === 'refrescar'){ render(); toast('Vista actualizada'); }
+    else if (act === 'limpiar'){
+      if (confirm('Esto eliminará TODOS los cursos. ¿Continuar?') && confirm('No se puede deshacer. ¿Seguro?')){
+        cursos = []; guardar(); render(); toast('Datos eliminados', 'warning');
+      }
+    }
+    return;
+  }
+  if (e.target === $('modal')) cerrar();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrar(); });
+$('buscar').addEventListener('input', render);
 
-        function eliminarCurso(id) {
-            if (confirm('¿Estás seguro de eliminar este entrenamiento?')) {
-                cursos = cursos.filter(c => c.id !== id);
-                guardarDatos();
-                actualizarVista();
-                mostrarToast('Curso eliminado correctamente');
-            }
-        }
+/* Exportar / importar */
+function exportar(){
+  const datos = {version:'1.0', fechaExportacion:new Date().toISOString(), totalCursos:cursos.length, empresa:'CENOP', cursos};
+  const url = URL.createObjectURL(new Blob([JSON.stringify(datos, null, 2)], {type:'application/json'}));
+  const a = document.createElement('a');
+  a.href = url; a.download = `evaluacion-cenop-${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  toast('Datos exportados');
+}
+$('importFile').addEventListener('change', e => {
+  const file = e.target.files[0]; if (!file) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    try {
+      const d = JSON.parse(ev.target.result);
+      if (!Array.isArray(d.cursos)) throw new Error('Formato de archivo inválido');
+      if (confirm(`Se importarán ${d.cursos.length} cursos y se reemplazarán los actuales. ¿Continuar?`)){
+        cursos = d.cursos; guardar(); render(); toast('Datos importados');
+      }
+    } catch (err){ toast('Error al importar: ' + err.message, 'error'); }
+  };
+  r.readAsText(file); e.target.value = '';
+});
 
-        // Semáforo: 5 días antes (Amarillo), 3 días antes (Naranja), 1 día / hoy (Rojo)
-        function calcularAlerta(fechaFinStr) {
-            const hoy = new Date();
-            const hoyCero = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate(), 0, 0, 0);
-            const finCero = parsearFechaLocal(fechaFinStr);
+/* Almacenamiento */
+function guardar(){ try { localStorage.setItem('cursos', JSON.stringify(cursos)); } catch(e){ toast('No se pudo guardar en el navegador', 'error'); } }
+function cargar(){ try { cursos = JSON.parse(localStorage.getItem('cursos')) || []; } catch(e){ cursos = []; } }
 
-            // Redondeo para evitar decimales por cambios de horario
-            const msPorDia = 1000 * 60 * 60 * 24;
-            const diferencia = Math.round((finCero - hoyCero) / msPorDia);
+function toast(msg, tipo = ''){
+  const t = document.createElement('div');
+  t.className = 'toast ' + tipo; t.textContent = msg; t.setAttribute('role', 'status');
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
 
-            if (diferencia < 0) {
-                return { nivel: 'terminado', dias: Math.abs(diferencia), clase: '', colorStatus: 'ended' };
-            }
-            if (diferencia === 0) {
-                return { nivel: 'hoy', dias: 0, clase: 'warning-red', colorStatus: 'red' };
-            }
-            if (diferencia === 1) {
-                return { nivel: 'urgente', dias: 1, clase: 'warning-red', colorStatus: 'red' };
-            }
-            if (diferencia <= 3) {
-                return { nivel: 'critico', dias: diferencia, clase: 'warning-orange', colorStatus: 'orange' };
-            }
-            if (diferencia <= 5) {
-                return { nivel: 'advertencia', dias: diferencia, clase: 'warning-yellow', colorStatus: 'yellow' };
-            }
-            return { nivel: 'normal', dias: diferencia, clase: '', colorStatus: '' };
-        }
+/* Reloj HUD */
+function tick(){
+  const n = new Date();
+  $('reloj').textContent = n.toLocaleTimeString('es-CO', {hour12:false});
+  $('fechaHoy').textContent = n.toLocaleDateString('es-CO', {weekday:'long', day:'2-digit', month:'long', year:'numeric'});
+}
+tick(); setInterval(tick, 1000);
 
-        function obtenerEtiqueta(alerta) {
-            switch (alerta.nivel) {
-                case 'terminado': return `FINALIZADO HACE ${alerta.dias} DÍA${alerta.dias !== 1 ? 'S' : ''}`;
-                case 'hoy': return '⚠️ FINALIZA HOY';
-                case 'urgente': return '⚠️ VENCE MAÑANA (1 DÍA)';
-                case 'critico': return `⚠️ VENCE EN ${alerta.dias} DÍAS`;
-                case 'advertencia': return `⚠️ AVISO: VENCE EN ${alerta.dias} DÍAS`;
-                case 'normal': return `EN CURSO (${alerta.dias} DÍAS RESTANTES)`;
-                default: return 'ACTIVO';
-            }
-        }
-
-        function actualizarVista() {
-            const container = document.getElementById('cursosContainer');
-
-            if (cursos.length === 0) {
-                container.innerHTML = `
-                    <div style="grid-column: 1/-1;">
-                        <div class="empty-state">
-                            <p>📡 No hay cursos o entrenamientos registrados.</p>
-                            <p style="font-size: 0.85em; margin-top: 5px;">Presiona "+ Nuevo Curso" para agregar uno.</p>
-                        </div>
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = cursos.map(curso => {
-                const alerta = calcularAlerta(curso.fechaFin);
-                const inicioVisual = formatearFechaVisual(curso.fechaInicio);
-                const finVisual = formatearFechaVisual(curso.fechaFin);
-
-                return `
-                    <div class="curso-card ${alerta.clase}">
-                        <div class="curso-header">
-                            <div class="curso-titulo">${curso.nombre}</div>
-                            <span class="curso-status ${alerta.colorStatus}">
-                                ${obtenerEtiqueta(alerta)}
-                            </span>
-                        </div>
-
-                        <div class="curso-info">
-                            <div class="info-row">
-                                <span class="info-label">📅 INICIO:</span>
-                                <span class="info-value">${inicioVisual}</span>
-                            </div>
-
-                            <div class="info-row">
-                                <span class="info-label">📅 FIN:</span>
-                                <span class="info-value">${finVisual}</span>
-                            </div>
-
-                            <div class="coordinador-info">
-                                <div class="coordinador-nombre">
-                                    ${curso.grado ? curso.grado + ' ' : ''}${curso.apellidos}
-                                </div>
-                                <div style="font-size: 0.8em; color: var(--text-secondary); margin-bottom: 6px;">
-                                    📞 ${curso.telefono}
-                                </div>
-                                <div class="phone-buttons">
-                                    <button class="phone-btn" onclick="llamar('${curso.telefono}')">☎️ Llamar</button>
-                                    <button class="phone-btn whatsapp" onclick="whatsapp('${curso.telefono}')">💬 WhatsApp</button>
-                                    <button class="phone-btn" onclick="copiarNumero('${curso.telefono}')">📋 Copiar</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="curso-acciones">
-                            <button class="btn-action" onclick="abrirModal(${curso.id})">✏️ Editar</button>
-                            <button class="btn-action danger" onclick="eliminarCurso(${curso.id})">🗑️ Eliminar</button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function llamar(telefono) {
-            window.location.href = `tel:${telefono}`;
-        }
-
-        function whatsapp(telefono) {
-            // Elimina espacios, guiones y paréntesis, pero mantiene los números
-            let numero = telefono.replace(/[\s\-()]/g, '').trim();
-            
-            // Si empieza con 0, reemplazar con +57 (código Colombia)
-            if (numero.startsWith('0')) {
-                numero = '57' + numero.substring(1);
-            }
-            // Si tiene +, eliminarlo
-            else if (numero.startsWith('+')) {
-                numero = numero.substring(1);
-            }
-            // Si es un número local colombiano (10 dígitos sin 57)
-            else if (!numero.startsWith('57') && numero.length === 10) {
-                numero = '57' + numero;
-            }
-            
-            window.open(`https://wa.me/${numero}`, '_blank');
-        }
-
-        function copiarNumero(telefono) {
-            navigator.clipboard.writeText(telefono).then(() => {
-                mostrarToast('Número copiado al portapapeles');
-            });
-        }
-
-        function exportarJSON() {
-            const datos = {
-                empresa: "CENOP",
-                dependencia: "EVALUACION Y CALIDAD",
-                autor: "IT WILSON ROJAS",
-                fechaExportacion: new Date().toISOString(),
-                cursos: cursos
-            };
-
-            const json = JSON.stringify(datos, null, 2);
-            const blob = new Blob([json], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `REPORTE_CENOP_${new Date().toISOString().split('T')[0]}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            mostrarToast('Reporte JSON generado');
-        }
-
-        function importarJSON() {
-            document.getElementById('importFile').click();
-        }
-
-        function procesarImportacion(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                try {
-                    const datos = JSON.parse(event.target.result);
-                    const listado = Array.isArray(datos) ? datos : datos.cursos;
-
-                    if (!Array.isArray(listado)) {
-                        throw new Error('Estructura no válida');
-                    }
-
-                    if (confirm(`Se cargarán ${listado.length} registros. ¿Deseas reemplazar los datos actuales?`)) {
-                        cursos = listado;
-                        guardarDatos();
-                        actualizarVista();
-                        mostrarToast('Reporte cargado con éxito');
-                    }
-                } catch (error) {
-                    mostrarToast('Error al importar archivo JSON', 'error');
-                }
-            };
-            reader.readAsText(file);
-            e.target.value = '';
-        }
-
-        function limpiarTodos() {
-            if (confirm('⚠️ ¿Estás seguro de eliminar TODOS los entrenamientos?')) {
-                cursos = [];
-                guardarDatos();
-                actualizarVista();
-                mostrarToast('Base de datos vaciada');
-            }
-        }
-
-        function guardarDatos() {
-            localStorage.setItem('cenop_cursos_db', JSON.stringify(cursos));
-        }
-
-        function cargarDatos() {
-            const datos = localStorage.getItem('cenop_cursos_db');
-            if (datos) {
-                try {
-                    cursos = JSON.parse(datos);
-                } catch (e) {
-                    cursos = [];
-                }
-            }
-        }
-
-        function mostrarToast(mensaje, tipo = 'success') {
-            const toast = document.createElement('div');
-            toast.className = `toast ${tipo}`;
-            toast.textContent = mensaje;
-            document.body.appendChild(toast);
-
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
-        }
-
-        window.onclick = (event) => {
-            const modal = document.getElementById('cursoModal');
-            if (event.target === modal) {
-                cerrarModal();
-            }
-        };
-    </script>
+cargar(); render();
+</script>
 </body>
 </html>
